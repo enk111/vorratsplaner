@@ -1,0 +1,1 @@
+Gemeinsame Einkaufsliste mit Offline-Sync, PIN-Kopplung und Alexa-Anbindung

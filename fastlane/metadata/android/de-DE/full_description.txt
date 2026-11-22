@@ -1,0 +1,14 @@
+Eine schlichte, gemeinsame Einkaufsliste für zwei oder mehr Personen.
+
+Funktionen:
+• Artikel mit Menge hinzufügen, abhaken und löschen
+• Alle abgehakten Artikel mit einem Tippen entfernen
+• Einfache Vorschläge aus früheren Eingaben beim Tippen
+• Funktioniert offline, Änderungen werden später automatisch abgeglichen
+• Liste teilen per sechsstelligem PIN, ohne Benutzerkonto und ohne Anmeldung
+• Optional: Produkte per Sprache über den Alexa Skill „Vorratsplaner“ hinzufügen
+
+Hinweise zum Datenschutz und zum Server:
+Für den Abgleich zwischen mehreren Geräten sendet die App die Artikel der Liste an einen Server des Entwicklers (Cloudflare Workers mit D1-Datenbank). Es werden keine Namen, E-Mail-Adressen oder Standortdaten abgefragt. Die Liste wird unter einer zufällig erzeugten Kennung gespeichert. Ohne Verbindung zu einer gemeinsamen Liste bleibt alles lokal auf dem Gerät.
+
+Die App enthält keine Werbung, kein Tracking und keine Google-Dienste.
