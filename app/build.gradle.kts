@@ -10,6 +10,10 @@ android {
         version = release(37)
     }
 
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
     defaultConfig {
         applicationId = "de.enkspace.vorratsplaner"
         minSdk = 28
