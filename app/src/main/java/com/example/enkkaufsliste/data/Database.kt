@@ -57,6 +57,9 @@ interface ItemDao {
 
     @Query("DELETE FROM items")
     suspend fun deleteAll()
+
+    @Query("UPDATE items SET name = :name, quantity = :quantity, updatedAt = :now, dirty = 1 WHERE id = :id")
+    suspend fun updateText(id: String, name: String, quantity: String, now: Long)
 }
 
 @Database(entities = [ShoppingItem::class], version = 1, exportSchema = false)

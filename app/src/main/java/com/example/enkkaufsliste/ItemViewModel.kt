@@ -79,6 +79,15 @@ class ItemViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    fun edit(item: ShoppingItem, name: String, quantity: String) {
+        val n = name.trim()
+        if (n.isEmpty()) return
+        viewModelScope.launch {
+            dao.updateText(item.id, n, quantity.trim().ifEmpty { "1" }, System.currentTimeMillis())
+            afterChange()
+        }
+    }
+
     fun clearChecked() {
         viewModelScope.launch {
             dao.clearChecked(System.currentTimeMillis())

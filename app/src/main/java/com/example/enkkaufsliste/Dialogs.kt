@@ -106,3 +106,43 @@ fun PinDialog(pin: String, onLeave: () -> Unit, onDismiss: () -> Unit) {
         )
     }
 }
+
+@Composable
+fun EditDialog(
+    initialName: String,
+    initialQuantity: String,
+    onSave: (String, String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var name by remember { mutableStateOf(initialName) }
+    var quantity by remember { mutableStateOf(initialQuantity) }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Artikel bearbeiten") },
+        text = {
+            Column {
+                OutlinedTextField(
+                    value = quantity,
+                    onValueChange = { quantity = it },
+                    singleLine = true,
+                    label = { Text("Menge") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    singleLine = true,
+                    label = { Text("Produkt") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = { onSave(name, quantity) }, enabled = name.isNotBlank()) {
+                Text("Speichern")
+            }
+        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Abbrechen") } }
+    )
+}

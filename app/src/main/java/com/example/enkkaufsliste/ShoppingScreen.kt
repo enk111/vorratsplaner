@@ -47,6 +47,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.enkkaufsliste.data.ShoppingItem
+import androidx.compose.ui.text.style.TextOverflow
 
 @Composable
 fun ShoppingScreen(vm: ItemViewModel) {
@@ -80,22 +81,29 @@ fun ShoppingScreen(vm: ItemViewModel) {
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    "Enk Vorratsplaner",
-                    modifier = Modifier.weight(1f),
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    when {
-                        !connected -> "Nur lokal"
-                        online -> "Synchronisiert"
-                        else -> "Offline"
-                    },
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    fontSize = 13.sp
-                )
+                Column(Modifier.weight(1f)) {
+                    Text(
+                        "Enk Vorratsplaner",
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(
+                        when {
+                            !connected -> "Nur lokal"
+                            online -> "Synchronisiert"
+                            else -> "Offline"
+                        },
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        fontSize = 13.sp,
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
                 TextButton(onClick = { if (connected) vm.showPin() else showConnect = true }) {
                     Text(
                         if (connected) "Teilen" else "Verbinden",
@@ -117,7 +125,7 @@ fun ShoppingScreen(vm: ItemViewModel) {
                         onValueChange = { qty = it },
                         modifier = Modifier.width(88.dp),
                         singleLine = true,
-                        placeholder = { Text("Menge") }
+                        placeholder = { Text("Menge", maxLines = 1, overflow = TextOverflow.Ellipsis) }
                     )
                     Spacer(Modifier.width(8.dp))
                     OutlinedTextField(
@@ -128,7 +136,7 @@ fun ShoppingScreen(vm: ItemViewModel) {
                         },
                         modifier = Modifier.weight(1f),
                         singleLine = true,
-                        placeholder = { Text("Produkt hinzufügen") },
+                        placeholder = { Text("Produkt", maxLines = 1, overflow = TextOverflow.Ellipsis) },
                         keyboardOptions = KeyboardOptions(
                             capitalization = KeyboardCapitalization.Sentences,
                             imeAction = ImeAction.Done
@@ -225,10 +233,12 @@ fun ShoppingScreen(vm: ItemViewModel) {
 fun ItemRow(item: ShoppingItem, vm: ItemViewModel) {
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
     val strike = if (item.checked) TextDecoration.LineThrough else TextDecoration.None
+    var editing by remember { mutableStateOf(false) }
     Row(
         Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
+            .clickable { editing = true }
             .padding(horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -249,4 +259,16 @@ fun ItemRow(item: ShoppingItem, vm: ItemViewModel) {
         TextButton(onClick = { vm.delete(item) }) { Text("✕", color = muted) }
     }
     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+
+    if (editing) {
+        EditDialog(
+            initialName = item.name,
+            initialQuantity = item.quantity,
+            onSave = { newName, newQuantity ->
+                vm.edit(item, newName, newQuantity)
+                editing = false
+            },
+            onDismiss = { editing = false }
+        )
+    }
 }
