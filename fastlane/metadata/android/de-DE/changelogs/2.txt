@@ -1,0 +1,1 @@
+Artikel lassen sich jetzt per Tipp bearbeiten. Titel und Eingabefeld bleiben auch bei großer Schrift einzeilig.
